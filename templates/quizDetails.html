@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+    {% block style %}{% endblock %}
+    {% block body %}
+    {% if mode == 'view' %}
+    <div class="row mx-auto d-flex justify-content-center pl-4 ml-4" id="quiz-details">
+        <div class="row">
+            <h3 class="col-12 pt-2">Quiz Name : {{name}}</h3>
+            <h4 class="col-12 pt-2">Appeared : {{appeared}}</h4>
+            <h4 class="col-12 pt-2">Full Marks : 100</h4>
+            <h4 class="col-12 pt-2">Pass Marks : {{passmarks}}</h4>
+            <h4 class="col-12 pt-2">Marks : {{marks}}
+              {% if appeared == "YES" %}
+              {% if marks >= passmarks %}
+              <span class="m-2 btn btn-success p-1">PASS</span>
+              {% else %}
+              <span class="m-2 btn btn-danger p-1">FAIL</span>
+              {% endif %}
+              {% else %}
+              <span class="m-2 btn btn-secondary p-1">NOT APPEARED</span>
+              {% endif %}
+            </h4>
+
+            <a href="/" class="btn btn-primary col-2 col-md-1 m-4">Home</a>
+            {% for result in results %}
+            <div class="col-12"></div>
+            <div class="pb-4 mb-4 col-9 col-md-7 col-lg-6 d-flex flex-column">
+                <h2>Q.{{result.id}} {{result.question}}</h2>
+                <h3>Answer : 
+                  {% if result.answer == 'Correct' %}
+                  <span class="text-success">
+                    {{result.answer}}
+                  </span>
+                  {% else %}
+                  <span class="text-danger">
+                    {{result.answer}}
+                  </span>
+                  {% endif %}
+                 </h3>
+              </div>
+            {% endfor %}
+            <div class="col-12"></div>
+          </div>
+    </div>
+    {% endif %}
+
+    {% if mode == 'add' %}
+    <div class="row d-flex justify-content-center" id="enter-details">
+        <div class="col-9 d-flex flex-column">
+          <form action="/addquizsubmit/" method="POST" id="quizform" name="quizform">
+            <div name="addQuizName" class="mt-4 pt-4 col-md-9 col-12" id="addQuizName">
+                <h3 class="mb-4">Enter the details of Quiz</h3>
+                <div class="mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3">
+                  <label for="passmarks" class="form-label">Passing Marks</label>
+                  <input type="number" class="form-control" id="passmarks" name="passmarks" placeholder="eg. 40" required>
+                </div>
+                <button onclick=start() class="btn btn-primary col-3 m-4">START</button>
+    
+              </div>
+
+              <div class="col-11"></div>
+              {% for i in range %}
+              <div action="" id={{i}} class="d-none mt-4 pt-4 col-md-9 col-11">
+                <div class="mb-4 pb-4 col-12">
+                  <h4 for="question" class="form-label">Question {{i}} ?</h4>
+                  <input type="text" class="form-control" id="question-{{i}}" name="question-{{i}}">
+                </div>
+                <div class="mb-3 col-12">
+                    <h4 class="form-label">Option 1</h4>
+                    <input type="text" class="form-control" id="op1-{{i}}" name="op1-{{i}}" >
+                </div>
+                <div class="mb-3 col-12">
+                    <h4 class="form-label">Option 2</h4>
+                    <input type="text" class="form-control" id="op2-{{i}}" name="op2-{{i}}" >
+                </div>
+                <div class="mb-3 col-12">
+                    <h4 class="form-label">Option 3</h4>
+                    <input type="text" class="form-control" id="op3-{{i}}" name="op3-{{i}}">
+                </div>
+                <div class="mb-3col-12">
+                    <h4 class="form-label">Option 4</h4>
+                    <input type="text" class="form-control" id="op4-{{i}}" name="op4-{{i}}" aria-describedby="emailHelp" required>
+                </div>
+                {% if i != '10' %}
+                <button class="mt-4 col-2 col-lg-1 btn btn-primary" onclick=nextQuestion() >NEXT</button>
+                {% else %}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary col-3 m-4">DONE</button>
+                {% endif %}
+              </div>
+              {% endfor %}
+          </form>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+    {% block script %}
+    <script>
+      let next;
+      const addQuizName = document.getElementById('addQuizName');
+
+      function start(){
+        next = 1;
+        let nextId = next.toString();
+
+        addQuizName.classList.add('d-none');
+        document.getElementById(nextId).classList.remove('d-none');
+      }
+
+      function nextQuestion(){
+        next += 1;
+        let nextId = next.toString();
+        let prev = next - 1;
+        let prevId = prev.toString();
+
+        document.getElementById(nextId).classList.remove('d-none');
+        document.getElementById(prevId).classList.add('d-none');
+      }
+    </script>
+    {% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+<center>
+    <h1>{{message}}</h1>
+    <h3>Q. {{question}}</h3>
+    {% for a in ansList %}
+    <h3>Ans: {{a}}</h3>
+    <br>
+    {% endfor %}
+
+    {% if qnid <= last %}
+    <a href="/appearquiz/{{qzid}}/{{qnid}}/" class="btn btn-dark">Next</a>
+    {% else %}
+    <a href="/result/{{qzid}}/" class="btn btn-dark" >Finish</a>
+    {% endif %}
+</center>
+{% endblock %}

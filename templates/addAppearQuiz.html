@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block style %}{% endblock %}
+
+
+
+
+{% block body %}
+{% if user.is_authenticated %}
+    {% if mode == 'appear' %}
+    <div class="container mt-4 mb-4" >
+        <form action="checkquiz/" method="POST" class="row">
+            {% csrf_token %}
+            <h3 class="col-12">Question Number : {{number}}/10</h3>
+            <h4 class="col-12 pb-4 mb-4">Marks : 0</h4>
+            <h2>Q. {{question.question_text}}</h2>
+            <div class="row m-4">
+                <div class="form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="op1" name="op1">
+                    <label class="form-check-label" >A. {{question.option_A}}</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="op2" name="op2">
+                    <label class="form-check-label" >B. {{question.option_B}}</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="op3" name="op3">
+                    <label class="form-check-label" >C. {{question.option_C}}</label>
+                </div>
+                <div class="form-check mb-2">
+                    <input type="checkbox" class="form-check-input" id="op4" name="op4">
+                    <label class="form-check-label" >D. {{question.option_D}}</label>
+                </div>
+                <input type="number" id="time" name="time" class="d-none">
+                <button onclick=done() type="submit" class="mt-4 col-2 col-lg-1 btn btn-primary" id="check">CHECK</button>
+                <div class="col-2"></div>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+
+    {% else %}
+
+    <div class="d-flex justify-content-spacearound">
+        <h1 class="mt-4 pt-4">403 - Forbidden Area</h1>
+    </div>
+{% endif %}
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    let time = 0;
+    setInterval(function(){
+        time++;
+    }, 1000);
+    function done(){
+        document.getElementById('time').value = time;
+    }
+</script>
+{% endblock %}
+
+
+    

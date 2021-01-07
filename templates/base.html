@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>School Quiz!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a href="/" class="nav-brand text-dark"><h2>School Quiz</h2></a>
+        <div class="contaner d-flex">
+          {% if user.is_authenticated %}
+
+            {% if user.is_superuser %}
+            <a href="/admin/" class="btn btn-primary mx-2">Admin</a>
+            
+
+            {% else %}
+            <h4 class="mx-2 pt-1">Hi, {{ user.first_name }}</h4>
+            
+            {% endif %}
+            <a href="/" class="btn btn-primary mx-2">All Quiz</a>
+            <a href="/logout/" class="text-danger pt-2 mx-2">logout</a>
+          {% else %}
+            <a href="/signin-form/" class="btn btn-primary mx-2">login</a>
+            <a href="/register-form/" class="btn btn-primary mx-2">register</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+
+    {% block body %}{% endblock %}
+
+    {% block script %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  </body>
+</html>

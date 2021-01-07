@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="row" align="center">
+        <div class="d-flex flex-column">
+            <h2 class="m-4 pt-4">Completed !</h2>
+            <h4 class="m-4">Total Marks : 100</h4>
+            <h4 class="mx-4 mt-1">Pass Marks : {{passmarks}}</h4>
+            <h4 class="mx-4 mt-1">Your Marks : {{yourmarks}} </h4>
+            <h4 class="mx-4 mt-1">Result :
+              {% if yourmarks >= passmarks %} 
+              <span class="text-success">PASS</span></h4>
+              {% else %}
+              <span class="text-danger">FAIL</span></h4>
+              {% endif %}
+        </div>
+        <div class="col-12"></div>
+        <div class="col-4 col-md-5"></div>
+        <a href="/quizdetails/{{quiz.id}}" class="col-2 btn btn-primary mx-4 mt-4">DETAILS</a>
+    </div>
+
+
+{% endblock %}
