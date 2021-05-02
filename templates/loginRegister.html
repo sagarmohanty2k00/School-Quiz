@@ -7,6 +7,13 @@
     <title>Document</title>
 </head>
 <body>
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+  {% endfor %}
+  {% endif %}
   {% if method == 'login' %}
     <div class="login row mx-auto d-flex justify-content-center">
         <form method="POST" action="/login/" class="mt-4 pt-4 col-md-6 col-9">
@@ -30,11 +37,14 @@
     {% if method == 'register' %}
     <div class="row mx-auto d-flex justify-content-center">
       {% csrf_token %}
-      <form action="/signup/" method="POST" class="mt-4 pt-4 col-md-6 col-9">
+      <form action="/signup/" method="POST" name="signupform" class="mt-4 pt-4 col-md-6 col-9">
         <h3 class="mb-4">Register</h3>
         <div class="mb-3">
           <label for="username" class="form-label">User Name</label>
-          <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" required>
+          <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" onchange="checkName()" required>
+        </div>
+        <div class="mb-3">
+          <p id="nameError"></p>
         </div>
         <div class="mb-3">
           <label for="fname" class="form-label">First Name</label>
@@ -50,15 +60,22 @@
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input type="password" class="form-control" id="password" name="password" onchange="checkpass()" required>
+          </div>
+          <div class="mb-3">
+            <p id="passError"></p>
           </div>
           <div class="mb-3">
             <label for="con-password" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="con-password" name="conf-password" required>
+            <input type="password" class="form-control" id="conpassword" name="confpassword" onchange="conpass()" required>
+          </div>
+          <div class="mb-3">
+            <p id="conError"></p>
           </div>
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Register</button>
-          <p class="mt-4">Already have an account? <a href="/"><em>login</em></a> here.</p>
+          <button type="button" onclick="return validateForm()" class="btn btn-primary">Register</button>
+          <p class="mt-4">Already have an account? <a href="/signin-form/"><em>login</em></a> here.</p>
+
 
         </form>
   </div>
@@ -67,5 +84,74 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script>
+      const user_list = '{{users}}';
+      let user;
+
+      const username = document.getElementById('username');
+      const nameError = document.getElementById('nameError');
+      const passError = document.getElementById('passError');
+      const conError = document.getElementById('conError');
+      const password = document.getElementById('password');
+      const conpassword = document.getElementById('conpassword');
+
+      function validateForm() {
+        if (nameError.innerHTML != "" || passError.innerHTML != "" || conError.innerHTML != "") {
+          alert("Enter the write values");
+          return false;
+        }
+
+        else {
+          document.signupform.submit();
+          return true;
+        }
+      }
+
+      const checkName = () => {
+        const a = username.value.charAt(0)
+        if (!isNaN(a)){
+          username.style.borderColor = 'red';
+          nameError.innerHTML = 'Name can not be started with a digit.';
+        }
+        else{
+          username.style.borderColor = '#ced4da';
+          nameError.innerHTML = ''
+        }
+      }
+
+      const checkpass = () => {
+        if(password.value.length < 8){
+          password.style.borderColor = 'red';
+          passError.innerHTML = 'Password must be greater than 8 characters'
+        }
+
+        else if (password.value == username.value){
+          password.style.borderColor = 'red';
+          passError.innerHTML = 'Username and password must be different'
+        }
+        
+        else{
+          password.style.borderColor = '#ced4da';
+          passError.innerHTML = ''
+        }
+      }
+      
+      const conpass = () => {
+        if (conpassword.value != password.value){
+          conpassword.style.borderColor = 'red';
+          conError.innerHTML = 'Password and conpassword should match'
+        }
+        else {
+          conpassword.style.borderColor = '#ced4da';
+          conError.innerHTML = ''
+        }
+      }
+      for (user = 0; user <= user_list.length; user++) {
+        console.log(user_list[user]);
+      }
+
+      console.log(user_list);
+    </script>
 </body>
 </html>

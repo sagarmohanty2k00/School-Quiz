@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 {% block body %}
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-primary" role="alert">
+      {{message}}
+    </div>
+  {% endfor %}
+{% endif %}
+
 {% if user.is_authenticated %}
 <div class="container mt-4 mb-4" align="center">
   <h2 class="mx-auto">All Available Quizzes : {{ available }}</h2>

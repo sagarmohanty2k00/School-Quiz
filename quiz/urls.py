@@ -22,6 +22,7 @@ urlpatterns = [
     path('appearquiz/<int:qzid>/<int:qnid>/checkquiz/',  views.checkQuestion),
     path('appearquiz/<int:qzid>/<int:qnid>/', views.appearQuestion),
     path('quizdetails/<int:id>/', views.viewQuiz),
-    path('result/<int:qzid>/', views.result)
+    path('result/<int:qzid>/', views.result),
+    path('leaderboard/', views.leaderboard)
 
 ]

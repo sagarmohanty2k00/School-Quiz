@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login,logout
@@ -15,6 +15,8 @@ def signin(request):
     return render(request, 'loginRegister.html', {'method': 'login'})
 
 def register(request):
+    users = User.objects.all()
+
     return render(request, 'loginRegister.html', {'method': 'register'})
 
 @csrf_protect
@@ -51,6 +53,14 @@ def addUser(request):
         lname = request.POST['lname']
         password = request.POST['password']
 
+        users = User.objects.all()
+        user_list = []
+        for user in users :
+            user_list.append(user.username)
+        if username in user_list :
+            messages.success(request, "Username Exists")
+            return redirect('/register-form/')
+
         myUser = User.objects.create_user(username, email, password)
         myUser.first_name = fname
         myUser.last_name = lname
@@ -59,9 +69,9 @@ def addUser(request):
 
 
         myUser.save()
-
-        return redirect('/')
-        messages.success(request, "Account has been created successfully")
+        messages.success(request, "User Created")
+        return redirect('/signin-form/')
+        # messages.success(request, "Account has been created successfully")
     else:
         pass
 
@@ -363,6 +373,22 @@ def result(request, qzid):
     }
     return render(request, 'result.html', constraints)
 
+
+def leaderboard(request):
+    users = User.objects.all()
+    leaderboard = {
+        100: ['sagar', 'asutosh'],
+
+        102: ['brad', 'pit'],
+
+        99: ['sonu', 'sudh']
+    }
+
+    constraints = {
+        'list' :sorted(leaderboard)
+    }
+
+    return render(request, 'leaderboard.html', constraints)
 
 
 # APIs

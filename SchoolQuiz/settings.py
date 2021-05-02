@@ -26,7 +26,7 @@ SECRET_KEY = '6uwo1j=fyu!qf6tr-=p1816dj&=98&^!oht*yv#9r0-e!wnnh('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['schoolquiz243.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

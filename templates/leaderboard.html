@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary" role="alert">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        {% for record in leaderboard %}
+            <p>{{record.0}}</p>
+        {% endfor %}
+    {% else %}
+
+    <div class="container row mx-auto mt-4 row" align="center">
+    <h3>Please Login to View the Quizzes.</h3>
+    </div>
+
+    {% endif %}
+
+
+
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+    </script>
+
+{% endblock %}
+
