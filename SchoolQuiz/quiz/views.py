@@ -15,8 +15,6 @@ def signin(request):
     return render(request, 'loginRegister.html', {'method': 'login'})
 
 def register(request):
-    users = User.objects.all()
-
     return render(request, 'loginRegister.html', {'method': 'register'})
 
 @csrf_protect
